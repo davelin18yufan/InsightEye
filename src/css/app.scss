@@ -1,1 +1,11 @@
 // app global css in SCSS form
+$border-color: #a7a6a6;
+
+table {
+    border: 1px solid $border-color !important;
+    border-collapse: collapse;
+
+  th, td {
+    border: 1px solid $border-color !important;
+ }
+}
