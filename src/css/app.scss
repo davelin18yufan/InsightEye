@@ -2,10 +2,11 @@
 $border-color: #a7a6a6;
 
 table {
-    border: 1px solid $border-color !important;
-    border-collapse: collapse;
+  border: 1px solid $border-color !important;
+  border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     border: 1px solid $border-color !important;
- }
+  }
 }

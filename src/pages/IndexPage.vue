@@ -4,7 +4,12 @@
       <div class="row justify-between items-center">
         <div class="text-h6">員工基本資訊</div>
         <div>
-          <q-btn class="q-mr-sm btn border-none" color="primary" label="新增" @click="add" />
+          <q-btn
+            class="q-mr-sm btn border-none"
+            color="primary"
+            label="新增"
+            @click="add"
+          />
           <q-btn
             class="btn"
             color="white"
@@ -69,9 +74,9 @@ export default {
     const onSelectedChangeFromTable = (data) => {
       // data passed from QTable is snapshot without updated
       // match state at both side
-      const existingRow = state.rows.filter(row =>
-        data.some(s => Object.keys(row).every(key => row[key] === s[key]))
-      )
+      const existingRow = state.rows.filter((row) =>
+        data.some((s) => Object.keys(row).every((key) => row[key] === s[key]))
+      );
       selectList.value = existingRow;
       // console.log("receive",data)
     };
@@ -83,30 +88,45 @@ export default {
         cancel: false,
         persistent: true,
       }).onOk((data) => {
-        if(!data) return
+        if (!data) return;
 
-        const {name, email, gender, cellphone, birthday} = data
-        state.rows = [{
-          name, cellphone, email, gender, birthday
-        }, ...state.rows]
+        const { name, email, gender, cellphone, birthday } = data;
+        state.rows = [
+          {
+            name,
+            cellphone,
+            email,
+            gender,
+            birthday,
+          },
+          ...state.rows,
+        ];
       });
     }
 
-    function deleteEmployee(){
+    function deleteEmployee() {
+      if (selectList.value.length < 1) {
+        $q.notify({ message: "Nothing is selected yet" });
+        return;
+      }
       $q.dialog({
-        title: '刪除',
+        title: "刪除",
         message: `是否確定刪除這${selectList.value.length}筆資料`,
         cancel: true,
-        persistent: true
-      }).onOk(() => {
-        const selectNameList = selectList.value.map(s => s.name)
-        // 
-        const newRows = state.rows.filter(item => !selectNameList.includes(item.name))
-        
-        state.rows = [...newRows]
-      }).onCancel(() => {
-        // console.log('>>>> Cancel')
+        persistent: true,
       })
+        .onOk(() => {
+          const selectNameList = selectList.value.map((s) => s.name);
+          //
+          const newRows = state.rows.filter(
+            (item) => !selectNameList.includes(item.name)
+          );
+
+          state.rows = [...newRows];
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        });
     }
 
     const state = reactive({
@@ -170,6 +190,6 @@ export default {
 }
 
 .border-none {
-  border: none
+  border: none;
 }
 </style>

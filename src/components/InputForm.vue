@@ -12,7 +12,6 @@
             :rules="[(val) => (val && val.length > 2) || 'Invalid name']"
           />
 
-
           <q-input
             filled
             type="email"
@@ -20,21 +19,23 @@
             label="Email"
             hint="Email"
             lazy-rules
-            :rules="[(val) => (val && val.length > 10) || 'Please type correctly',]"
+            :rules="[
+              (val) => (val && val.length > 10) || 'Please type correctly',
+            ]"
           />
 
-            <q-input
-              filled
-              type="number"
-              v-model="cellphone"
-              label="cellphone"
-              hint="mobile number"
-              lazy-rules
-              :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please type phone number',
-              ]"
-            />
+          <q-input
+            filled
+            type="number"
+            v-model="cellphone"
+            label="cellphone"
+            hint="mobile number"
+            lazy-rules
+            :rules="[
+              (val) =>
+                (val !== null && val !== '') || 'Please type phone number',
+            ]"
+          />
 
           <q-select
             filled
@@ -66,33 +67,33 @@ import { useDialogPluginComponent, useQuasar } from "quasar";
 import { ref } from "vue";
 
 export default {
-  emits: ['ok', 'hide'],
+  emits: ["ok", "hide"],
   methods: {
     validateDateInput(value) {
       const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 
       if (!regex.test(value)) {
-        return 'Please enter validate formation(YYYY-MM-DD)';
+        return "Please enter validate formation(YYYY-MM-DD)";
       }
-      const [year, month, day] = value.split('-').map(Number);
+      const [year, month, day] = value.split("-").map(Number);
 
       // verify month (1 - 12)
       if (month < 1 || month > 12) {
-        return 'Month should be between 1 ~ 12';
+        return "Month should be between 1 ~ 12";
       }
 
       // verify date（1 - 31）
       if (day < 1 || day > 31) {
-        return 'Date should be between 1 ~ 31';
+        return "Date should be between 1 ~ 31";
       }
 
       return true;
     },
     hide() {
-      this.$refs.dialog.hide()
+      this.$refs.dialog.hide();
     },
   },
-  setup(prop, {emit}) {
+  setup(prop, { emit }) {
     const name = ref(null);
     const cellphone = ref(null);
     const email = ref(null);
@@ -100,7 +101,7 @@ export default {
     const birthday = ref(null);
     const { dialogRef, onDialogOK, onDialogCancel } =
       useDialogPluginComponent();
-    const $q = useQuasar()
+    const $q = useQuasar();
 
     return {
       name,
@@ -110,21 +111,29 @@ export default {
       birthday,
       dialogRef,
       onDialogHide: () => {
-        name.value= null
-        email.value = null
-        gender.value= null
-        cellphone.value= null
-        birthday.value = null
+        name.value = null;
+        email.value = null;
+        gender.value = null;
+        cellphone.value = null;
+        birthday.value = null;
       },
       onDialogCancel: () => {
-        emit('hide')
+        emit("hide");
       },
       onOKClick() {
-        if (!(name.value && email.value && cellphone.value && gender.value && birthday.value)) {
+        if (
+          !(
+            name.value &&
+            email.value &&
+            cellphone.value &&
+            gender.value &&
+            birthday.value
+          )
+        ) {
           return $q.notify({
-            message:"Please completely fill this form",
-            icon: "announcement"
-          })
+            message: "Please completely fill this form",
+            icon: "announcement",
+          });
         }
 
         onDialogOK({
